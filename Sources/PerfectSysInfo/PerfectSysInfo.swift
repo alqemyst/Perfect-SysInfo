@@ -83,7 +83,7 @@ extension String {
         }//end if
       }while(count > 0)
       fclose(f)
-      buf.deallocate(capacity: String.szSTR)
+      buf.deallocate()
       let ret = String(cString: content)
       return ret
     }
@@ -210,7 +210,7 @@ public class SysInfo {
             }//end bound
           } while (cursor < len)
         }//end if
-        buf.deallocate(capacity: len)
+        buf.deallocate()
         return true
       }//end pointer
       return ifaces
@@ -280,7 +280,7 @@ public class SysInfo {
                 return cursor
               }//end bound
             } while (cursor < len)
-            buf.deallocate(capacity: len)
+            buf.deallocate()
           }//end if
           return true
         }) else {
@@ -388,7 +388,7 @@ public class SysInfo {
             stat[key] = Int(value) / 256
           }//next i
         }//end if
-        pStat.deallocate(capacity: size)
+        pStat.deallocate()
         return stat
       #endif
     }//end get
