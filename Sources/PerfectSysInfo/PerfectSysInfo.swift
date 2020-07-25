@@ -291,27 +291,24 @@ public class SysInfo {
     }
   }
 
-  /// return physical CPU information
-  public static var CPU: [String: [String: Int]] {
-    get {
-    #if os(Linux)
-      let definition: [(keyName: String, isString: Bool)]
-        = [("name", true),
-           ("user", false), ("nice", false),
-           ("system", false), ("idle", false)]
-      guard let content = "/proc/stat".asFile else { return [:] }
-      let array = content.asLines.filter { $0.match(prefix: "cpu") }
-        .map { $0.parse(definition: definition) }
-      var lines: [String: [String: Int]] = [:]
-      for item in array {
-        guard let title = item["name"] else { continue }
-        var stat: [String: Int] = [:]
-        for (k,v) in (item.filter { $0.key != "name" }) {
-          stat[k] = Int(v) ?? 0
-        }//next
-        lines[title] = stat
+	/// return physical CPU information
+	public static var CPU: [String: [String: Int]] {
+		get {
+		#if os(Linux)
+			let definition: [(keyName: String, isString: Bool)] = [("name", true), ("user", false), ("nice", false), ("system", false), ("idle", false), ("iowait", false), ("irq", false), ("softirq", false), ("steal", false), ("guest", false), ("guest_nice", false)]
+			guard let content = "/proc/stat".asFile else { return [:] }
+			let array = content.asLines.filter { $0.match(prefix: "cpu") }
+				.map { $0.parse(definition: definition) }
+			var lines: [String: [String: Int]] = [:]
+			for item in array {
+				guard let title = item["name"] else { continue }
+				var stat: [String: Int] = [:]
+				for (k,v) in (item.filter { $0.key != "name" }) {
+					stat[k] = Int(v) ?? 0
+				}//next
+				lines[title] = stat
       }//next
-    #else
+		#else
       var pCPULoadArray = processor_info_array_t(bitPattern: 0)
       var processorMsgCount = mach_msg_type_name_t()
       var processorCount = natural_t()
