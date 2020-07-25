@@ -248,7 +248,7 @@ public class SysInfo {
             }//end while
             free(str)
             if numbers.count < 9 { return }
-            io[tag.trimmed] = ["i": numbers[0] / 1024, "o": numbers[8] / 1024]
+            io[tag.trimmed] = ["rx": numbers[0] / 1048576, "tx": numbers[8] / 1048576]
         }
       #else
         let ifaces = interfaces
@@ -272,7 +272,7 @@ public class SysInfo {
                     pIfm2 in
                     let pd = pIfm.pointee
                     if index < ifaces.count {
-                      io[ifaces[index]] = ["i": Int(pd.ifm_data.ifi_ibytes) / 1024, "o": Int(pd.ifm_data.ifi_obytes) / 1024]
+                      io[ifaces[index]] = ["rx": Int(pd.ifm_data.ifi_ibytes) / 1048576, "tx": Int(pd.ifm_data.ifi_obytes) / 1048576]
                     }//end if
                     index += 1
                   }//end ifm2
